@@ -14,6 +14,7 @@ public class principal {
         equipos[][] encuentros = generarFixture(arrEquipos);
         String[][] fechasJugadas = new String[7][4];
         equipos[] tablaPosiciones = arrEquipos;
+
         System.out.println("          OPERACIONES:           ");
         System.out.println("1. Ingresar resultados de una fecha");
         System.out.println("2. Ingresar un nuevo jugador");
@@ -40,7 +41,7 @@ public class principal {
             switch (num) {
                 case 1:
                     System.out.println("Ingrese el numero de la fecha a cargar");
-                    fecha = sc.nextInt() - 1;
+                    fecha = Integer.parseInt(sc.nextLine()) - 1;
                     if (fechasJugadas[fecha][0] == null) {
                         cargarFechas(encuentros, fecha, fechasJugadas);
                     } else {
@@ -362,11 +363,11 @@ public class principal {
                 visitante = encuentros[fecha][posEncuentros + 1];
                 System.out.println("Partido " + (i + 1));
                 System.out.println("Ingrese los goles del local (" + local.getNombreEquipo() + "):");
-                golesLocal = sc.nextInt();
+                golesLocal = Integer.parseInt(sc.nextLine());
                 contarGoles(golesLocal, local);
                 System.out.println();
                 System.out.println("Ingrese los goles del visitante (" + visitante.getNombreEquipo() + "):");
-                golesVisitante = sc.nextInt();
+                golesVisitante = Integer.parseInt(sc.nextLine());
                 contarGoles(golesVisitante, visitante);
                 setResultadosPartido(local, visitante, golesLocal, golesVisitante);
                 fechasJugadas[fecha][i] = local.getNombreEquipo() + " " + golesLocal + " - "
@@ -386,7 +387,7 @@ public class principal {
         jugadores[] listJugadores = unEquipo.getListJugadores();
         while (k < goles) {
             System.out.print("ingrese el numero del jugador que hizo gol " + "(" + (k + 1) + "): ");
-            num = sc.nextInt();
+            num = Integer.parseInt(sc.nextLine());
             encontrado = busquedaNum(num, unEquipo);
             cargado = false;
             if (encontrado) {
@@ -475,7 +476,7 @@ public class principal {
         arrJugadores = unEquipo.getListJugadores();
         if (existe) {
             System.out.println("ingrese el dni del jugador:");
-            dni = sc.nextInt();
+            dni = Integer.parseInt(sc.nextLine());
             if (!buscarJugador(dni, unEquipo)) {
                 jugador = pedirDatos(dni, unEquipo);
                 unJugador = crearJugador(jugador);
@@ -518,7 +519,7 @@ public class principal {
         jugador += dni + ";";
         while (!yaUsado) {
             System.out.println("ingrese numero de camiseta:");
-            numeroCamiseta = sc.nextInt();
+            numeroCamiseta = Integer.parseInt(sc.nextLine());
             if (busquedaNum(numeroCamiseta, unEquipo)) {
                 System.out.println("ingrese otro numero");
             } else {
@@ -553,13 +554,13 @@ public class principal {
         }
     }
 
-    // Método que particionar la tabla de posiciones
+    // divido la tabla de posiciones
     private static int particionEquipos(equipos[] tablaPosiciones, int min, int max) {
         equipos pivot = tablaPosiciones[max];
         int i = (min - 1);
 
         for (int j = min; j < max; j++) {
-            // hago que solo vea los menores por puntos
+            // hago que solo se vean los menores por puntos
             if (tablaPosiciones[j].getPuntosAcum() < pivot.getPuntosAcum()) {
                 i++;
                 equipos temp = tablaPosiciones[i];
@@ -588,16 +589,13 @@ public class principal {
         int n = tablaPosiciones.length;
         for (int i = 1; i < n; ++i) {
             if (tablaPosiciones[i] != null) {
-                jugadores key = tablaPosiciones[i];
+                jugadores unJugador = tablaPosiciones[i];
                 int j = i - 1;
-
-                // Mueve los elementos de lista[0..i-1], que son mayores que key,
-                // a una posición adelante de su posición actual
-                while (j >= 0 && tablaPosiciones[j].getCantGoles() < key.getCantGoles()) {
+                while (j >= 0 && tablaPosiciones[j].getCantGoles() < unJugador.getCantGoles()) {
                     tablaPosiciones[j + 1] = tablaPosiciones[j];
                     j = j - 1;
                 }
-                tablaPosiciones[j + 1] = key;
+                tablaPosiciones[j + 1] = unJugador;
             }
         }
     }
