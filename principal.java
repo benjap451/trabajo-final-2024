@@ -3,8 +3,8 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.text.Normalizer;
-import java.util.Scanner;
 import java.util.regex.Pattern;
+import java.util.Scanner;
 
 public class principal {
     public static void main(String[] args) {
@@ -13,7 +13,6 @@ public class principal {
         jugadores[] arrJugadores = new jugadores[15 * 8];
         leerJugadores(arrEquipos, arrJugadores);
         jugadores[] tablaGoles = arrJugadores;
-        ordenarJugadores(arrJugadores);
         equipos[][] encuentros = generarFixture(arrEquipos);
         String[][] fechasJugadas = new String[7][4];
         equipos[] tablaPosiciones = arrEquipos;
@@ -67,13 +66,14 @@ public class principal {
                     break;
                 case 2:
                     nuevoJugador(arrEquipos, arrJugadores);
+                    tablaGoles = arrJugadores;
+                    ordenarJugadores(tablaGoles);
                     break;
                 case 3:
                     int i = tablaPosiciones.length - 1;
                     System.out.println("         POSICIONES DEL TORNEO");
                     System.out.printf("%-20s %4s %3s %3s %3s %3s %3s %3s %4s%n", "Equipo", "Pts", "PJ", "PG", "PE",
-                            "PP",
-                            "GF", "GC", "DF");
+                            "PP", "GF", "GC", "DF");
                     while (i >= 0) {
                         System.out.println(
                                 String.format("%-20s %4d %3d %3d %3d %3d %3d %3d %4d",
@@ -97,7 +97,7 @@ public class principal {
                     int j = 0;
                     System.out.println("           TABLA DE GOLEADORES");
                     System.out.println("Jugador           Equipo            Goles");
-                    while (j < 10 && tablaGoles[j] != null) {
+                    while (tablaGoles[j] != null) {
                         if (tablaGoles[j].getCantGoles() > 0) {
                             System.out.println(
                                     String.format("%-15s %-15s %5d",
@@ -528,8 +528,9 @@ public class principal {
                     jugador = pedirDatos(dni, unEquipo);
                     unJugador = crearJugador(jugador);
                     while (!nuevoCargado && k < listaJugadores.length) {
-                        if (listaJugadores[k] != null) {
+                        if (listaJugadores[k] == null) {
                             listaJugadores[k] = unJugador;
+                            nuevoCargado=true;
                         }
                         k++;
                     }
@@ -703,7 +704,6 @@ public class principal {
 
     // Este metodo ordena los jugadores usando el metodo de insercion
     public static void ordenarNombreInsercion(jugadores[] arrJugadores) {
-        int n = arrJugadores.length;
         String nombreApellido;
         for (int i = 1; i < arrJugadores.length; i++) {
             if (arrJugadores[i] != null) {
@@ -785,5 +785,4 @@ public class principal {
             k++;
         }
     }
-
 }
