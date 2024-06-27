@@ -42,19 +42,28 @@ public class principal {
             System.out.println();
             switch (num) {
                 case 1:
-                    System.out.println("Ingrese el numero de la fecha a cargar");
-                    fecha = Integer.parseInt(sc.nextLine()) - 1;
-                    if (fechasJugadas[fecha][0] == null) {
-                        cargarFechas(encuentros, fecha, fechasJugadas);
-                    } else {
-                        System.out.println("La fecha ya esta cargada");
+                    try {
+                        System.out.println("Ingrese el numero de la fecha a cargar");
+                        fecha = Integer.parseInt(sc.nextLine()) - 1;
+                        if (fecha <= 6) {
+                            if (fechasJugadas[fecha][0] == null) {
+                                cargarFechas(encuentros, fecha, fechasJugadas);
+                            } else {
+                                System.out.println("La fecha ya esta cargada");
+                            }
+                        } else {
+                            System.out.println("Ese numero de fecha no existe");
+                        }
+                        /*
+                         * despues de ingresar una fecha llamo al modulo que ordena a los equipos
+                         * para poder mostrar la tabla de posiciones siempre ordenada
+                         */
+                        ordenarEquipos(tablaPosiciones, 0, tablaPosiciones.length - 1);
+                        ordenarJugadores(tablaGoles);
+                    } catch (NumberFormatException e) {
+                        System.out.println("Valor no valido");
+                        System.out.println(e.getMessage());
                     }
-                    /*
-                     * despues de ingresar una fecha llamo al modulo que ordena a los equipos
-                     * para poder mostrar la tabla de posiciones siempre ordenada
-                     */
-                    ordenarEquipos(tablaPosiciones, 0, tablaPosiciones.length - 1);
-                    ordenarJugadores(tablaGoles);
                     break;
                 case 2:
                     nuevoJugador(arrEquipos, arrJugadores);
@@ -120,9 +129,14 @@ public class principal {
                         i11++;
                     }
                     if (encontrado) {
-                        System.out.println("Ingrese la edad:");
-                        edad11 = Integer.parseInt(sc.nextLine());
-                        System.out.println(menorDeEdad(0, arrEquipos[pos].getListJugadores(), edad11));
+                        try {
+                            System.out.println("Ingrese la edad:");
+                            edad11 = Integer.parseInt(sc.nextLine());
+                            System.out.println(menorDeEdad(0, arrEquipos[pos].getListJugadores(), edad11));
+                        } catch (NumberFormatException e) {
+                            System.out.println("Valor no valido");
+                            System.out.println(e.getMessage());
+                        }
                     } else {
                         System.out.println("Ese equipo no existe");
                     }
@@ -131,25 +145,30 @@ public class principal {
                     int numOrdenamiento;
                     System.out.println("Ingrese el numero del ordenamiento que quiere usar:");
                     System.out.println("1. Insercion(menos eficiente) 2. ordenarNombreMerge(mas eficiente)");
-                    numOrdenamiento = Integer.parseInt(sc.nextLine());
-                    if (numOrdenamiento == 1) {
-                        ordenarNombreInsercion(arrJugadores);
-                        for (int k = 0; k < tablaGoles.length; k++) {
-                            if (arrJugadores[k] != null) {
-                                System.out.println(
-                                        arrJugadores[k].getApellido() + " " + arrJugadores[k].getNombreJugador());
+                    try {
+                        numOrdenamiento = Integer.parseInt(sc.nextLine());
+                        if (numOrdenamiento == 1) {
+                            ordenarNombreInsercion(arrJugadores);
+                            for (int k = 0; k < tablaGoles.length; k++) {
+                                if (arrJugadores[k] != null) {
+                                    System.out.println(
+                                            arrJugadores[k].getApellido() + " " + arrJugadores[k].getNombreJugador());
+                                }
                             }
-                        }
-                    } else if (numOrdenamiento == 2) {
-                        ordenarNombreMerge(arrJugadores, 0, arrJugadores.length - 1);
-                        for (int k = 0; k < tablaGoles.length; k++) {
-                            if (arrJugadores[k] != null) {
-                                System.out.println(
-                                        arrJugadores[k].getApellido() + " " + arrJugadores[k].getNombreJugador());
+                        } else if (numOrdenamiento == 2) {
+                            ordenarNombreMerge(arrJugadores, 0, arrJugadores.length - 1);
+                            for (int k = 0; k < tablaGoles.length; k++) {
+                                if (arrJugadores[k] != null) {
+                                    System.out.println(
+                                            arrJugadores[k].getApellido() + " " + arrJugadores[k].getNombreJugador());
+                                }
                             }
+                        } else {
+                            System.out.println("Opcion desconocida...");
                         }
-                    } else {
-                        System.out.println("Opcion desconocida...");
+                    } catch (NumberFormatException e) {
+                        System.out.println("Valor no valido");
+                        System.out.println(e.getMessage());
                     }
                     break;
                 // caso de relleno para ver el fixture completo
@@ -164,17 +183,19 @@ public class principal {
                     System.out.println("Opcion desconocida...");
                     break;
             }
-            System.out.println("-:-:-:-:-:-:-:-:-:-:-:-:-:-:-:-:-:-:-:-:-:-:-:- \n");
-            System.out.println("          OPERACIONES:           ");
-            System.out.println("1. Ingresar resultados de una fecha");
-            System.out.println("2. Ingresar un nuevo jugador");
-            System.out.println("3. Ver tabla de posiciones");
-            System.out.println("4. Ver resultados de las fechas");
-            System.out.println("5. Ver lista de goleadores");
-            System.out.println("6. Promedio de edad");
-            System.out.println("7. Ver jugador menor a una edad");
-            System.out.println("8. Ver jugadores por nombre");
-            System.out.println("0. Para salir \n");
+            if (num != 0) {
+                System.out.println("-:-:-:-:-:-:-:-:-:-:-:-:-:-:-:-:-:-:-:-:-:-:-:- \n");
+                System.out.println("          OPERACIONES:           ");
+                System.out.println("1. Ingresar resultados de una fecha");
+                System.out.println("2. Ingresar un nuevo jugador");
+                System.out.println("3. Ver tabla de posiciones");
+                System.out.println("4. Ver resultados de las fechas");
+                System.out.println("5. Ver lista de goleadores");
+                System.out.println("6. Promedio de edad");
+                System.out.println("7. Ver jugador menor a una edad");
+                System.out.println("8. Ver jugadores por nombre");
+                System.out.println("0. Para salir \n");
+            }
         } catch (NumberFormatException e) {
             System.out.println("Valor no valido");
             System.out.println(e.getMessage());
@@ -355,15 +376,24 @@ public class principal {
     public static void mostrarFechas(String[][] fechasJugadas) {
         Scanner sc = new Scanner(System.in);
         int k = 0;
-        System.out.print("Ingrese el numero de la fecha para ver: ");
-        k = sc.nextInt() - 1;
-        System.out.println();
-        if (fechasJugadas[k][0] != null) {
-            for (int j = 0; j < fechasJugadas[0].length; j++) {
-                System.out.println(fechasJugadas[k][j]);
+        try {
+            System.out.print("Ingrese el numero de la fecha para ver: ");
+            k = Integer.parseInt(sc.nextLine()) - 1;
+            System.out.println();
+            if (k <= 6) {
+                if (fechasJugadas[k][0] != null) {
+                    for (int j = 0; j < fechasJugadas[0].length; j++) {
+                        System.out.println(fechasJugadas[k][j]);
+                    }
+                } else {
+                    System.out.println("Fecha no cargada...");
+                }
+            } else {
+                System.out.println("Ese numero de fecha no existe");
             }
-        } else {
-            System.out.println("Fecha no cargada...");
+        } catch (NumberFormatException e) {
+            System.out.println("Valor no valido");
+            System.out.println(e.getMessage());
         }
     }
 
@@ -474,39 +504,44 @@ public class principal {
         String equipo, jugador;
         boolean existe = false, nuevoCargado = false;
         int i = 0, dni, k = 0;
-        while (!existe) {
-            System.out.println("ingrese el equipo del nuevo jugador:");
-            equipo = sc.nextLine();
-            if (buscarNombreEquipo(equipo, arrEquipos)) {
-                while (i < arrEquipos.length) {
-                    if (equipo.equalsIgnoreCase(arrEquipos[i].getNombreEquipo())) {
-                        unEquipo = arrEquipos[i];
+        try {
+            while (!existe) {
+                System.out.println("ingrese el equipo del nuevo jugador:");
+                equipo = sc.nextLine();
+                if (buscarNombreEquipo(equipo, arrEquipos)) {
+                    while (i < arrEquipos.length) {
+                        if (equipo.equalsIgnoreCase(arrEquipos[i].getNombreEquipo())) {
+                            unEquipo = arrEquipos[i];
+                        }
+                        i++;
                     }
-                    i++;
+                    existe = true;
+                } else {
+                    System.out.println("El equipo no existe, ingrese otro");
                 }
-                existe = true;
-            } else {
-                System.out.println("El equipo no existe, ingrese otro");
             }
-        }
-        arrJugadores = unEquipo.getListJugadores();
-        if (existe) {
-            System.out.println("ingrese el dni del jugador:");
-            dni = Integer.parseInt(sc.nextLine());
-            if (!buscarJugador(dni, unEquipo)) {
-                jugador = pedirDatos(dni, unEquipo);
-                unJugador = crearJugador(jugador);
-                while (!nuevoCargado && k < listaJugadores.length) {
-                    if (listaJugadores[k] != null) {
-                        listaJugadores[k] = unJugador;
+            arrJugadores = unEquipo.getListJugadores();
+            if (existe) {
+                System.out.println("ingrese el dni del jugador:");
+                dni = Integer.parseInt(sc.nextLine());
+                if (!buscarJugador(dni, unEquipo)) {
+                    jugador = pedirDatos(dni, unEquipo);
+                    unJugador = crearJugador(jugador);
+                    while (!nuevoCargado && k < listaJugadores.length) {
+                        if (listaJugadores[k] != null) {
+                            listaJugadores[k] = unJugador;
+                        }
+                        k++;
                     }
-                    k++;
+                    unEquipo.setNuevoJugador(unJugador);
+                } else {
+                    System.out.println("El jugador ya existe");
                 }
-                unEquipo.setNuevoJugador(unJugador);
-            } else {
-                System.out.println("El jugador ya existe");
-            }
 
+            }
+        } catch (NumberFormatException e) {
+            System.out.println("Valor no valido");
+            System.out.println(e.getMessage());
         }
     }
 
@@ -526,25 +561,30 @@ public class principal {
         String jugador = "";
         int numeroCamiseta;
         Scanner sc = new Scanner(System.in);
-        System.out.println("Ingrese apellido del jugador:");
-        jugador += sc.nextLine() + ";";
-        System.out.println("ingrese nombre del jugador:");
-        jugador += sc.nextLine() + ";";
-        System.out.println("ingrese edad del jugador:");
-        jugador += sc.nextLine() + ";";
-        jugador += dni + ";";
-        while (!yaUsado) {
-            System.out.println("ingrese numero de camiseta:");
-            numeroCamiseta = Integer.parseInt(sc.nextLine());
-            if (busquedaNum(numeroCamiseta, unEquipo)) {
-                System.out.println("ingrese otro numero");
-            } else {
-                jugador += numeroCamiseta + ";";
-                yaUsado = true;
+        try {
+            System.out.println("Ingrese apellido del jugador:");
+            jugador += sc.nextLine() + ";";
+            System.out.println("ingrese nombre del jugador:");
+            jugador += sc.nextLine() + ";";
+            System.out.println("ingrese edad del jugador:");
+            jugador += Integer.parseInt(sc.nextLine()) + ";";
+            jugador += dni + ";";
+            while (!yaUsado) {
+                System.out.println("ingrese numero de camiseta:");
+                numeroCamiseta = Integer.parseInt(sc.nextLine());
+                if (busquedaNum(numeroCamiseta, unEquipo)) {
+                    System.out.println("ingrese otro numero");
+                } else {
+                    jugador += numeroCamiseta + ";";
+                    yaUsado = true;
+                }
             }
+            jugador += unEquipo.getNombreEquipo();
+            System.out.println("Jugador cargado");
+        } catch (NumberFormatException e) {
+            System.out.println("Valor no valido");
+            System.out.println(e.getMessage());
         }
-        jugador += unEquipo.getNombreEquipo();
-        System.out.println("Jugador cargado");
         return jugador;
     }
 
