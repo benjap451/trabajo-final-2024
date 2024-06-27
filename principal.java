@@ -152,7 +152,7 @@ public class principal {
                         System.out.println("Opcion desconocida...");
                     }
                     break;
-                //caso de relleno para ver el fixture completo
+                // caso de relleno para ver el fixture completo
                 case 9:
                     printencuentros(encuentros);
                     break;
@@ -181,20 +181,6 @@ public class principal {
         }
         if (b1) {
             menuPrincipal(b1, arrEquipos, encuentros, fechasJugadas, tablaPosiciones, arrJugadores, tablaGoles);
-        }
-    }
-
-    public static void mostrarJugadores(equipos[] arrEquipos, String nombre) {
-        jugadores[] listJugadores = new jugadores[15];
-        for (int i = 0; i < arrEquipos.length; i++) {
-            if (arrEquipos[i].getNombreEquipo().equalsIgnoreCase(nombre)) {
-                listJugadores = arrEquipos[i].getListJugadores();
-            }
-        }
-        for (int i = 0; i < listJugadores.length; i++) {
-            if (listJugadores[i] != null) {
-                System.out.print(listJugadores[i].getNombreJugador() + " " + listJugadores[i].getCantGoles() + " ");
-            }
         }
     }
 
@@ -695,13 +681,17 @@ public class principal {
         }
     }
 
+    /*
+     * Este modulo lo agregue externamente para solucionar
+     * el problema de los nombres con acentos
+     */
     public static String quitarAcentos(String input) {
         String normalized = Normalizer.normalize(input, Normalizer.Form.NFD);
         Pattern pattern = Pattern.compile("\\p{InCombiningDiacriticalMarks}+");
         return pattern.matcher(normalized).replaceAll("");
     }
 
-    // El siguiente metodo usa un ordenamiento mas eficiente para ordenar
+    // El siguiente modulo ordena usando mergeSort
     public static void ordenarNombreMerge(jugadores[] arrJugadores, int izquierda, int derecha) {
         if (izquierda < derecha) {
             int medio = (izquierda + derecha) / 2;
