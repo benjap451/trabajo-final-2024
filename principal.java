@@ -2,7 +2,9 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.text.Normalizer;
 import java.util.Scanner;
+import java.util.regex.Pattern;
 
 public class principal {
     public static void main(String[] args) {
@@ -10,6 +12,7 @@ public class principal {
         equipos[] arrEquipos = leerEquipos();
         jugadores[] arrJugadores = new jugadores[15 * 8];
         leerJugadores(arrEquipos, arrJugadores);
+        jugadores[] tablaGoles = arrJugadores;
         ordenarJugadores(arrJugadores);
         equipos[][] encuentros = generarFixture(arrEquipos);
         String[][] fechasJugadas = new String[7][4];
@@ -18,19 +21,18 @@ public class principal {
         System.out.println("          OPERACIONES:           ");
         System.out.println("1. Ingresar resultados de una fecha");
         System.out.println("2. Ingresar un nuevo jugador");
-        System.out.println("3. Ver jugadores de un equipo");
-        System.out.println("4. Ver fixture");
-        System.out.println("5. Ver resultados de las fechas");
-        System.out.println("6. Ver tabla de posiciones");
-        System.out.println("7. Ver lista de goleadores");
-        System.out.println("8. Ver lista de todos los jugadores");
-        System.out.println("9. Calcular edad promedio de los jugadores");
+        System.out.println("3. Ver tabla de posiciones");
+        System.out.println("4. Ver resultados de las fechas");
+        System.out.println("5. Ver lista de goleadores");
+        System.out.println("6. Promedio de edad");
+        System.out.println("7. Ver jugador menor a una edad");
+        System.out.println("8. Ver jugadores por nombre");
         System.out.println("0. Para salir \n");
-        menuPrincipal(b1, arrEquipos, encuentros, fechasJugadas, tablaPosiciones, arrJugadores);
+        menuPrincipal(b1, arrEquipos, encuentros, fechasJugadas, tablaPosiciones, arrJugadores, tablaGoles);
     }
 
     public static void menuPrincipal(boolean b1, equipos[] arrEquipos, equipos[][] encuentros,
-            String[][] fechasJugadas, equipos[] tablaPosiciones, jugadores[] arrJugadores) {
+            String[][] fechasJugadas, equipos[] tablaPosiciones, jugadores[] arrJugadores, jugadores[] tablaGoles) {
         Scanner sc = new Scanner(System.in);
         int num, fecha;
         System.out.println("-:-:-:-:-:-:-:-:-:-:-:-:-:-:-:-:-:-:-:-:-:-:-:- \n");
@@ -52,26 +54,12 @@ public class principal {
                      * para poder mostrar la tabla de posiciones siempre ordenada
                      */
                     ordenarEquipos(tablaPosiciones, 0, tablaPosiciones.length - 1);
-                    ordenarJugadores(arrJugadores);
+                    ordenarJugadores(tablaGoles);
                     break;
                 case 2:
                     nuevoJugador(arrEquipos, arrJugadores);
                     break;
                 case 3:
-                    String nombre;
-                    System.out.print("Ingrese el equipo: ");
-                    sc.nextLine();
-                    nombre = sc.nextLine();
-                    mostrarJugadores(arrEquipos, nombre);
-                    System.out.println();
-                    break;
-                case 4:
-                    printencuentros(encuentros);
-                    break;
-                case 5:
-                    mostrarFechas(fechasJugadas);
-                    break;
-                case 6:
                     int i = tablaPosiciones.length - 1;
                     System.out.println("         POSICIONES DEL TORNEO");
                     System.out.printf("%-20s %4s %3s %3s %3s %3s %3s %3s %4s%n", "Equipo", "Pts", "PJ", "PG", "PE",
@@ -93,36 +81,80 @@ public class principal {
                     }
                     System.out.println();
                     break;
-                case 7:
+                case 4:
+                    mostrarFechas(fechasJugadas);
+                    break;
+                case 5:
                     int j = 0;
                     System.out.println("           TABLA DE GOLEADORES");
                     System.out.println("Jugador           Equipo            Goles");
-                    while (j < 10 && arrJugadores[j] != null) {
-                        if (arrJugadores[j].getCantGoles() > 0) {
+                    while (j < 10 && tablaGoles[j] != null) {
+                        if (tablaGoles[j].getCantGoles() > 0) {
                             System.out.println(
                                     String.format("%-15s %-15s %5d",
-                                            arrJugadores[j].getNombreJugador(),
-                                            arrJugadores[j].getNombreEquipo(),
-                                            arrJugadores[j].getCantGoles()));
+                                            tablaGoles[j].getNombreJugador(),
+                                            tablaGoles[j].getNombreEquipo(),
+                                            tablaGoles[j].getCantGoles()));
                         }
                         j++;
                     }
                     break;
-                case 8:
-                    for (int j2 = 0; j2 < arrJugadores.length; j2++) {
-                        if (arrJugadores[j2] != null) {
-                            System.out.println(arrJugadores[j2].getNombreJugador() + " " + (j2 + 1));
-                        }
-                    }
-                    break;
-                case 9:
-                    System.out.print("Promedio de edad de los jugadores: ");
-                    System.out.println(edadPromedio(arrJugadores, 0, 0));
-                    break;
-                case 10:
+                case 6:
                     int promedio = edadPromedio(arrJugadores, 0, 0);
+                    System.out.print("Promedio de edad de los jugadores: ");
+                    System.out.println(promedio);
                     System.out.print("cantidad de jugadores de edad mayor a " + promedio + ": ");
                     System.out.println(mayoresPromedio(arrJugadores, 0, promedio) + " jugadores");
+                    break;
+                case 7:
+                    String nombre11;
+                    int edad11, i11 = 0, pos = 0;
+                    boolean encontrado = false;
+                    System.out.print("Ingrese el nombre del equipo: \n");
+                    nombre11 = sc.nextLine();
+                    while (!encontrado && i11 < arrEquipos.length) {
+                        encontrado = nombre11.equalsIgnoreCase(arrEquipos[i11].getNombreEquipo());
+                        if (encontrado) {
+                            pos = i11;
+                        }
+                        i11++;
+                    }
+                    if (encontrado) {
+                        System.out.println("Ingrese la edad:");
+                        edad11 = Integer.parseInt(sc.nextLine());
+                        System.out.println(menorDeEdad(0, arrEquipos[pos].getListJugadores(), edad11));
+                    } else {
+                        System.out.println("Ese equipo no existe");
+                    }
+                    break;
+                case 8:
+                    int numOrdenamiento;
+                    System.out.println("Ingrese el numero del ordenamiento que quiere usar:");
+                    System.out.println("1. Insercion(menos eficiente) 2. ordenarNombreMerge(mas eficiente)");
+                    numOrdenamiento = Integer.parseInt(sc.nextLine());
+                    if (numOrdenamiento == 1) {
+                        ordenarNombreInsercion(arrJugadores);
+                        for (int k = 0; k < tablaGoles.length; k++) {
+                            if (arrJugadores[k] != null) {
+                                System.out.println(
+                                        arrJugadores[k].getApellido() + " " + arrJugadores[k].getNombreJugador());
+                            }
+                        }
+                    } else if (numOrdenamiento == 2) {
+                        ordenarNombreMerge(arrJugadores, 0, arrJugadores.length - 1);
+                        for (int k = 0; k < tablaGoles.length; k++) {
+                            if (arrJugadores[k] != null) {
+                                System.out.println(
+                                        arrJugadores[k].getApellido() + " " + arrJugadores[k].getNombreJugador());
+                            }
+                        }
+                    } else {
+                        System.out.println("Opcion desconocida...");
+                    }
+                    break;
+                //caso de relleno para ver el fixture completo
+                case 9:
+                    printencuentros(encuentros);
                     break;
                 case 0:
                     b1 = false;
@@ -132,25 +164,23 @@ public class principal {
                     System.out.println("Opcion desconocida...");
                     break;
             }
-            sc.nextLine();
             System.out.println("-:-:-:-:-:-:-:-:-:-:-:-:-:-:-:-:-:-:-:-:-:-:-:- \n");
             System.out.println("          OPERACIONES:           ");
             System.out.println("1. Ingresar resultados de una fecha");
             System.out.println("2. Ingresar un nuevo jugador");
-            System.out.println("3. Ver jugadores de un equipo");
-            System.out.println("4. Ver fixture");
-            System.out.println("5. Ver resultados de las fechas");
-            System.out.println("6. Ver tabla de posiciones");
-            System.out.println("7. Ver lista de goleadores");
-            System.out.println("8. Ver lista de todos los jugadores");
-            System.out.println("9. Calcular edad promedio de los jugadores");
+            System.out.println("3. Ver tabla de posiciones");
+            System.out.println("4. Ver resultados de las fechas");
+            System.out.println("5. Ver lista de goleadores");
+            System.out.println("6. Promedio de edad");
+            System.out.println("7. Ver jugador menor a una edad");
+            System.out.println("8. Ver jugadores por nombre");
             System.out.println("0. Para salir \n");
         } catch (NumberFormatException e) {
             System.out.println("Valor no valido");
             System.out.println(e.getMessage());
         }
         if (b1) {
-            menuPrincipal(b1, arrEquipos, encuentros, fechasJugadas, tablaPosiciones, arrJugadores);
+            menuPrincipal(b1, arrEquipos, encuentros, fechasJugadas, tablaPosiciones, arrJugadores, tablaGoles);
         }
     }
 
@@ -593,7 +623,7 @@ public class principal {
                 int j = i - 1;
                 while (j >= 0 && tablaPosiciones[j].getCantGoles() < unJugador.getCantGoles()) {
                     tablaPosiciones[j + 1] = tablaPosiciones[j];
-                    j = j - 1;
+                    j -= 1;
                 }
                 tablaPosiciones[j + 1] = unJugador;
             }
@@ -632,4 +662,98 @@ public class principal {
         }
         return cont;
     }
+
+    public static String menorDeEdad(int i, jugadores[] listaJugadores, int edad) {
+        String nombreApellido = "No hay un jugador menor a esa edad";
+        if (i < listaJugadores.length) {
+            if (edad >= listaJugadores[i].getEdad()) {
+                nombreApellido = listaJugadores[i].getApellido() + " " + listaJugadores[i].getNombreJugador();
+            } else {
+                nombreApellido = menorDeEdad(i + 1, listaJugadores, edad);
+            }
+        }
+        return nombreApellido;
+    }
+
+    // Este metodo ordena los jugadores usando el metodo de insercion
+    public static void ordenarNombreInsercion(jugadores[] arrJugadores) {
+        int n = arrJugadores.length;
+        String nombreApellido;
+        for (int i = 1; i < arrJugadores.length; i++) {
+            if (arrJugadores[i] != null) {
+                jugadores unJugadores = arrJugadores[i];
+                int j = i - 1;
+                nombreApellido = unJugadores.getApellido() + unJugadores.getNombreJugador();
+                while (j >= 0 && quitarAcentos(nombreApellido)
+                        .compareTo(quitarAcentos(
+                                arrJugadores[j].getApellido() + arrJugadores[j].getNombreJugador())) < 0) {
+                    arrJugadores[j + 1] = arrJugadores[j];
+                    j -= 1;
+                }
+                arrJugadores[j + 1] = unJugadores;
+            }
+        }
+    }
+
+    public static String quitarAcentos(String input) {
+        String normalized = Normalizer.normalize(input, Normalizer.Form.NFD);
+        Pattern pattern = Pattern.compile("\\p{InCombiningDiacriticalMarks}+");
+        return pattern.matcher(normalized).replaceAll("");
+    }
+
+    // El siguiente metodo usa un ordenamiento mas eficiente para ordenar
+    public static void ordenarNombreMerge(jugadores[] arrJugadores, int izquierda, int derecha) {
+        if (izquierda < derecha) {
+            int medio = (izquierda + derecha) / 2;
+            // llamados para dividir las mitades
+            ordenarNombreMerge(arrJugadores, izquierda, medio);
+            ordenarNombreMerge(arrJugadores, medio + 1, derecha);
+            // combino los sub arreglos
+            merge(arrJugadores, izquierda, medio, derecha);
+        }
+    }
+
+    public static void merge(jugadores[] arrJugadores, int izquierda, int medio, int derecha) {
+        int n1 = medio - izquierda + 1, n2 = derecha - medio, i = 0, j = 0, k = izquierda;
+        String nombreApellidoL = "", nombreApellidoR = "";
+        jugadores[] L = new jugadores[n1], R = new jugadores[n2];
+
+        for (int m = 0; m < n1; m++) {
+            L[m] = arrJugadores[izquierda + m];
+        }
+        for (int t = 0; t < n2; t++) {
+            R[t] = arrJugadores[medio + 1 + t];
+        }
+
+        // compara elementos y los combina
+        while (i < n1 && j < n2) {
+            if (L[i] != null && R[j] != null) {
+                nombreApellidoL = L[i].getApellido() + L[i].getNombreJugador();
+                nombreApellidoR = R[j].getApellido() + R[j].getNombreJugador();
+            }
+            if (quitarAcentos(nombreApellidoL).compareTo(quitarAcentos(nombreApellidoR)) <= 0) {
+                arrJugadores[k] = L[i];
+                i++;
+            } else {
+                arrJugadores[k] = R[j];
+                j++;
+            }
+            k++;
+        }
+
+        // copio lo que queda de L[]
+        while (i < n1) {
+            arrJugadores[k] = L[i];
+            i++;
+            k++;
+        }
+
+        // Copio lo que queda de R[]
+        while (j < n2) {
+            arrJugadores[k] = R[j];
+            j++;
+            k++;
+        }
+    }
+
 }
