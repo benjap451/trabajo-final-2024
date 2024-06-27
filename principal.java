@@ -3,8 +3,8 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.text.Normalizer;
-import java.util.regex.Pattern;
 import java.util.Scanner;
+import java.util.regex.Pattern;
 
 public class principal {
     public static void main(String[] args) {
@@ -530,7 +530,7 @@ public class principal {
                     while (!nuevoCargado && k < listaJugadores.length) {
                         if (listaJugadores[k] == null) {
                             listaJugadores[k] = unJugador;
-                            nuevoCargado=true;
+                            nuevoCargado = true;
                         }
                         k++;
                     }
@@ -615,7 +615,6 @@ public class principal {
     private static int particionEquipos(equipos[] tablaPosiciones, int min, int max) {
         equipos pivot = tablaPosiciones[max];
         int i = (min - 1);
-
         for (int j = min; j < max; j++) {
             // hago que solo se vean los menores por puntos
             if (tablaPosiciones[j].getPuntosAcum() < pivot.getPuntosAcum()) {
@@ -636,7 +635,6 @@ public class principal {
         equipos temp = tablaPosiciones[i + 1];
         tablaPosiciones[i + 1] = tablaPosiciones[max];
         tablaPosiciones[max] = temp;
-
         return i + 1;
     }
 
@@ -770,14 +768,12 @@ public class principal {
             }
             k++;
         }
-
         // copio lo que queda de L[]
         while (i < n1) {
             arrJugadores[k] = L[i];
             i++;
             k++;
         }
-
         // Copio lo que queda de R[]
         while (j < n2) {
             arrJugadores[k] = R[j];
