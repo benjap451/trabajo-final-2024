@@ -9,13 +9,13 @@ import java.util.regex.Pattern;
 public class principal {
     public static void main(String[] args) {
         boolean b1 = true;
-        equipos[] arrEquipos = leerEquipos();
-        jugadores[] arrJugadores = new jugadores[15 * 8];
+        Equipos[] arrEquipos = leerEquipos();
+        Jugadores[] arrJugadores = new Jugadores[15 * 8];
         leerJugadores(arrEquipos, arrJugadores);
-        jugadores[] tablaGoles = arrJugadores;
-        equipos[][] encuentros = generarFixture(arrEquipos);
+        Jugadores[] tablaGoles = arrJugadores;
+        Equipos[][] encuentros = generarFixture(arrEquipos);
         String[][] fechasJugadas = new String[7][4];
-        equipos[] tablaPosiciones = arrEquipos;
+        Equipos[] tablaPosiciones = arrEquipos;
 
         System.out.println("          OPERACIONES:           ");
         System.out.println("1. Ingresar resultados de una fecha");
@@ -25,13 +25,13 @@ public class principal {
         System.out.println("5. Ver lista de goleadores");
         System.out.println("6. Promedio de edad");
         System.out.println("7. Ver jugador menor a una edad");
-        System.out.println("8. Ver jugadores por nombre");
+        System.out.println("8. Ver Jugadores por nombre");
         System.out.println("0. Para salir \n");
         menuPrincipal(b1, arrEquipos, encuentros, fechasJugadas, tablaPosiciones, arrJugadores, tablaGoles);
     }
 
-    public static void menuPrincipal(boolean b1, equipos[] arrEquipos, equipos[][] encuentros,
-            String[][] fechasJugadas, equipos[] tablaPosiciones, jugadores[] arrJugadores, jugadores[] tablaGoles) {
+    public static void menuPrincipal(boolean b1, Equipos[] arrEquipos, Equipos[][] encuentros,
+            String[][] fechasJugadas, Equipos[] tablaPosiciones, Jugadores[] arrJugadores, Jugadores[] tablaGoles) {
         Scanner sc = new Scanner(System.in);
         int num, fecha;
         System.out.println("-:-:-:-:-:-:-:-:-:-:-:-:-:-:-:-:-:-:-:-:-:-:-:- \n");
@@ -54,7 +54,7 @@ public class principal {
                             System.out.println("Ese numero de fecha no existe");
                         }
                         /*
-                         * despues de ingresar una fecha llamo al modulo que ordena a los equipos
+                         * despues de ingresar una fecha llamo al modulo que ordena a los Equipos
                          * para poder mostrar la tabla de posiciones siempre ordenada
                          */
                         ordenarEquipos(tablaPosiciones, 0, tablaPosiciones.length - 1);
@@ -110,10 +110,10 @@ public class principal {
                     break;
                 case 6:
                     int promedio = edadPromedio(arrJugadores, 0, 0);
-                    System.out.print("Promedio de edad de los jugadores: ");
+                    System.out.print("Promedio de edad de los Jugadores: ");
                     System.out.println(promedio);
-                    System.out.print("cantidad de jugadores de edad mayor a " + promedio + ": ");
-                    System.out.println(mayoresPromedio(arrJugadores, 0, promedio) + " jugadores");
+                    System.out.print("cantidad de Jugadores de edad mayor a " + promedio + ": ");
+                    System.out.println(mayoresPromedio(arrJugadores, 0, promedio) + " Jugadores");
                     break;
                 case 7:
                     String nombre11;
@@ -175,6 +175,13 @@ public class principal {
                 case 9:
                     printencuentros(encuentros);
                     break;
+                case 10:
+                    for (int k = 0; k < tablaGoles.length; k++) {
+                        if (arrJugadores[k]!=null){
+                            System.out.println(arrJugadores[k].getApellido()+" "+arrJugadores[k].getNombreJugador());
+                        }
+                    }
+                    break;
                 case 0:
                     b1 = false;
                     System.out.println("Hasta la proxima...");
@@ -193,7 +200,7 @@ public class principal {
                 System.out.println("5. Ver lista de goleadores");
                 System.out.println("6. Promedio de edad");
                 System.out.println("7. Ver jugador menor a una edad");
-                System.out.println("8. Ver jugadores por nombre");
+                System.out.println("8. Ver Jugadores por nombre");
                 System.out.println("0. Para salir \n");
             }
         } catch (NumberFormatException e) {
@@ -206,16 +213,16 @@ public class principal {
     }
 
     // el siguiente bloque se encarga de crear un arrEquiposeglo con todos los6
-    // equipos:
+    // Equipos:
 
-    // este modulo carga los equipos al arrEquipos
-    public static equipos[] leerEquipos() {
-        equipos[] arrEquipos = new equipos[0];
+    // este modulo carga los Equipos al arrEquipos
+    public static Equipos[] leerEquipos() {
+        Equipos[] arrEquipos = new Equipos[0];
         arrEquipos = longitudarrEquipos();
         String linea = "";
         FileReader archivo;
         BufferedReader lector;
-        equipos unEquipo;
+        Equipos unEquipo;
         int i = 0;
         try {
             archivo = new FileReader(
@@ -236,22 +243,22 @@ public class principal {
     }
 
     // este modulo crea cada objeto equipo por cada linea
-    public static equipos cargarEquipo(String linea) {
-        equipos unEquipo = new equipos("", "");
+    public static Equipos cargarEquipo(String linea) {
+        Equipos unEquipo = new Equipos("", "");
         String arrEquipos[] = linea.split(";");
         String nombre = "", categoria = "";
         if (arrEquipos.length == 2) {
             nombre = arrEquipos[0];
             categoria = arrEquipos[1];
         }
-        unEquipo = new equipos(nombre, categoria);
+        unEquipo = new Equipos(nombre, categoria);
         return unEquipo;
     }
 
     // este modulo define el largo en base a la cantidad de lineas
-    public static equipos[] longitudarrEquipos() {
+    public static Equipos[] longitudarrEquipos() {
         String linea = "";
-        equipos[] arrEquipos = new equipos[0];
+        Equipos[] arrEquipos = new Equipos[0];
         FileReader archivo;
         BufferedReader lector;
         int i = 0;
@@ -268,22 +275,22 @@ public class principal {
         } catch (IOException ex) {
             System.out.println("Error en lectura o escritura");
         }
-        arrEquipos = new equipos[i];
+        arrEquipos = new Equipos[i];
         return arrEquipos;
     }
 
-    // el proximo bloque de modulos crea y carga los jugadores del archivo txt
+    // el proximo bloque de modulos crea y carga los Jugadores del archivo txt
 
     /*
-     * El siguiente modulo lee el archivo de jugadores y con otros dos modulos
+     * El siguiente modulo lee el archivo de Jugadores y con otros dos modulos
      * crea un objeto jugador, y en otro carga ese jugador al arreglo de la clase
      * equipo
      */
-    public static void leerJugadores(equipos[] arrEquipos, jugadores[] arrJugadores) {
+    public static void leerJugadores(Equipos[] arrEquipos, Jugadores[] arrJugadores) {
         String linea = "";
         FileReader archivo;
         BufferedReader lector;
-        jugadores unJugador;
+        Jugadores unJugador;
         int i = 0;
         try {
             archivo = new FileReader(
@@ -304,8 +311,8 @@ public class principal {
 
     }
 
-    // uso este modulo para cargar los jugadores en el arreglo de la clase equipo
-    public static void cargarJugadores(equipos[] arrEquipos, jugadores unJugador) {
+    // uso este modulo para cargar los Jugadores en el arreglo de la clase equipo
+    public static void cargarJugadores(Equipos[] arrEquipos, Jugadores unJugador) {
         int i = 0;
         boolean cargado = false;
         while (!cargado && i < arrEquipos.length) {
@@ -320,8 +327,8 @@ public class principal {
     }
 
     // este modulo crea cada objeto jugador por cada linea
-    public static jugadores crearJugador(String linea) {
-        jugadores unJugador = new jugadores("", "", 0, 0, 0, "");
+    public static Jugadores crearJugador(String linea) {
+        Jugadores unJugador = new Jugadores("", "", 0, 0, 0, "");
         String arrJugadores[] = linea.split(";");
         String nombreJugador = "", apellido = "", nombreEquipo = "";
         int edad = 0, dni = 0, numeroCamiseta = 0;
@@ -333,20 +340,20 @@ public class principal {
             numeroCamiseta = Integer.parseInt(arrJugadores[4]);
             nombreEquipo = arrJugadores[5];
         }
-        unJugador = new jugadores(nombreJugador, apellido, edad, dni, numeroCamiseta, nombreEquipo);
+        unJugador = new Jugadores(nombreJugador, apellido, edad, dni, numeroCamiseta, nombreEquipo);
         return unJugador;
     }
 
     // modulo para generar el fixture
-    public static equipos[][] generarFixture(equipos[] arrEquipos) {
+    public static Equipos[][] generarFixture(Equipos[] arrEquipos) {
         /*
-         * hice que retorne el fixture con equipos organizado segun los cruces
+         * hice que retorne el fixture con Equipos organizado segun los cruces
          * para tener por cada linea de la matriz los cruces de cada fecha y
          * cargar las fechas de manera mas rapida
          */
         int cantEquipos = arrEquipos.length;
         int cantFechas = cantEquipos - 1;
-        equipos[][] encuentros = new equipos[cantFechas][8];
+        Equipos[][] encuentros = new Equipos[cantFechas][8];
         for (int fecha = 0; fecha < cantFechas; fecha++) {
             for (int j = 0; j < 8; j = j + 2) {
                 int local = (fecha + j) % (cantEquipos - 1);
@@ -363,7 +370,7 @@ public class principal {
     }
 
     // este modulo muestra como son los encuentros del torneo
-    public static void printencuentros(equipos[][] encuentros) {
+    public static void printencuentros(Equipos[][] encuentros) {
         for (int i = 0; i < encuentros.length; i++) {
             System.out.println("          Encuentro " + (i + 1));
             for (int j = 0; j < encuentros[i].length - 1; j = j + 2) {
@@ -400,11 +407,11 @@ public class principal {
     }
 
     // este modulo carga los resultados de una fecha
-    public static void cargarFechas(equipos[][] encuentros, int fecha, String[][] fechasJugadas) {
+    public static void cargarFechas(Equipos[][] encuentros, int fecha, String[][] fechasJugadas) {
         Scanner sc = new Scanner(System.in);
         System.out.println("Resultados fecha " + (fecha + 1) + ":");
         int golesLocal = 0, golesVisitante = 0, posEncuentros = 0;
-        equipos local, visitante;
+        Equipos local, visitante;
         for (int i = 0; i < fechasJugadas.length; i++) {
             if (posEncuentros < encuentros[0].length) {
                 local = encuentros[fecha][posEncuentros];
@@ -428,11 +435,11 @@ public class principal {
     }
 
     // Este modulo carga los goles de cada jugador
-    public static void contarGoles(int goles, equipos unEquipo) {
+    public static void contarGoles(int goles, Equipos unEquipo) {
         Scanner sc = new Scanner(System.in);
         boolean encontrado = false, cargado = false;
         int num, j = 0, k = 0;
-        jugadores[] listJugadores = unEquipo.getListJugadores();
+        Jugadores[] listJugadores = unEquipo.getListJugadores();
         while (k < goles) {
             System.out.print("ingrese el numero del jugador que hizo gol " + "(" + (k + 1) + "): ");
             num = Integer.parseInt(sc.nextLine());
@@ -458,9 +465,9 @@ public class principal {
     }
 
     // este modulo verifica si un numero pertenece a un equipo
-    public static boolean busquedaNum(int num, equipos unEquipo) {
+    public static boolean busquedaNum(int num, Equipos unEquipo) {
         boolean encontrado = false;
-        jugadores[] listJugadores = unEquipo.getListJugadores();
+        Jugadores[] listJugadores = unEquipo.getListJugadores();
         int i = 0;
         while (!encontrado && i < listJugadores.length) {
             if (listJugadores[i] != null) {
@@ -474,7 +481,7 @@ public class principal {
     }
 
     // este modulo hace set de los goles y partidos de cada equipo
-    public static void setResultadosPartido(equipos local, equipos visitante, int golesLocal, int golesVisita) {
+    public static void setResultadosPartido(Equipos local, Equipos visitante, int golesLocal, int golesVisita) {
         local.setGolesFavor(golesLocal);
         local.setGolesContra(golesVisita);
         local.setDiferenciaGoles();
@@ -498,11 +505,11 @@ public class principal {
     }
 
     // el siguiente modulo crea un nuevo jugador pidiendo los datos al usuario
-    public static void nuevoJugador(equipos[] arrEquipos, jugadores[] listaJugadores) {
+    public static void nuevoJugador(Equipos[] arrEquipos, Jugadores[] listaJugadores) {
         Scanner sc = new Scanner(System.in);
-        jugadores[] arrJugadores;
-        jugadores unJugador;
-        equipos unEquipo = new equipos("", "");
+        Jugadores[] arrJugadores;
+        Jugadores unJugador;
+        Equipos unEquipo = new Equipos("", "");
         String equipo, jugador;
         boolean existe = false, nuevoCargado = false;
         int i = 0, dni, k = 0;
@@ -549,7 +556,7 @@ public class principal {
     }
 
     // modulo auxiliar para ver si existe el nombre del equipo
-    public static boolean buscarNombreEquipo(String nombre, equipos[] arrEquipos) {
+    public static boolean buscarNombreEquipo(String nombre, Equipos[] arrEquipos) {
         boolean encontrado = false;
         int i = 0;
         while (!encontrado && i < arrEquipos.length) {
@@ -559,7 +566,7 @@ public class principal {
         return encontrado;
     }
 
-    public static String pedirDatos(int dni, equipos unEquipo) {
+    public static String pedirDatos(int dni, Equipos unEquipo) {
         boolean yaUsado = false;
         String jugador = "";
         int numeroCamiseta;
@@ -591,9 +598,9 @@ public class principal {
         return jugador;
     }
 
-    public static boolean buscarJugador(int dni, equipos unEquipo) {
+    public static boolean buscarJugador(int dni, Equipos unEquipo) {
         boolean encontrado = false;
-        jugadores[] arrJugadores = unEquipo.getListJugadores();
+        Jugadores[] arrJugadores = unEquipo.getListJugadores();
         for (int i = 0; i < arrJugadores.length; i++) {
             if (arrJugadores[i] != null) {
                 if (arrJugadores[i].getDni() == dni) {
@@ -604,8 +611,8 @@ public class principal {
         return encontrado;
     }
 
-    // utilizo el metodo quicksort para ordenar los equipos por puntos
-    public static void ordenarEquipos(equipos[] tablaPosiciones, int min, int max) {
+    // utilizo el metodo quicksort para ordenar los Equipos por puntos
+    public static void ordenarEquipos(Equipos[] tablaPosiciones, int min, int max) {
         if (min < max) {
             int pivot = particionEquipos(tablaPosiciones, min, max);
             ordenarEquipos(tablaPosiciones, min, pivot - 1);
@@ -614,39 +621,39 @@ public class principal {
     }
 
     // divido la tabla de posiciones
-    private static int particionEquipos(equipos[] tablaPosiciones, int min, int max) {
-        equipos pivot = tablaPosiciones[max];
+    private static int particionEquipos(Equipos[] tablaPosiciones, int min, int max) {
+        Equipos pivot = tablaPosiciones[max];
         int i = (min - 1);
         for (int j = min; j < max; j++) {
             // hago que solo se vean los menores por puntos
             if (tablaPosiciones[j].getPuntosAcum() < pivot.getPuntosAcum()) {
                 i++;
-                equipos temp = tablaPosiciones[i];
+                Equipos temp = tablaPosiciones[i];
                 tablaPosiciones[i] = tablaPosiciones[j];
                 tablaPosiciones[j] = temp;
             } else if (tablaPosiciones[j].getPuntosAcum() == pivot.getPuntosAcum()) {
                 // si los puntos son iguales comparo la diferencia de goles
                 if (tablaPosiciones[j].getDiferenciaGoles() < pivot.getDiferenciaGoles()) {
                     i++;
-                    equipos temp = tablaPosiciones[i];
+                    Equipos temp = tablaPosiciones[i];
                     tablaPosiciones[i] = tablaPosiciones[j];
                     tablaPosiciones[j] = temp;
                 }
             }
         }
-        equipos temp = tablaPosiciones[i + 1];
+        Equipos temp = tablaPosiciones[i + 1];
         tablaPosiciones[i + 1] = tablaPosiciones[max];
         tablaPosiciones[max] = temp;
         return i + 1;
     }
 
-    // bloque de ordenamiento de los jugadores por goles
-    // utilizo el metodo de insercion para ordenar a los jugadores
-    public static void ordenarJugadores(jugadores[] tablaPosiciones) {
+    // bloque de ordenamiento de los Jugadores por goles
+    // utilizo el metodo de insercion para ordenar a los Jugadores
+    public static void ordenarJugadores(Jugadores[] tablaPosiciones) {
         int n = tablaPosiciones.length;
         for (int i = 1; i < n; ++i) {
             if (tablaPosiciones[i] != null) {
-                jugadores unJugador = tablaPosiciones[i];
+                Jugadores unJugador = tablaPosiciones[i];
                 int j = i - 1;
                 while (j >= 0 && tablaPosiciones[j].getCantGoles() < unJugador.getCantGoles()) {
                     tablaPosiciones[j + 1] = tablaPosiciones[j];
@@ -657,7 +664,7 @@ public class principal {
         }
     }
 
-    public static int edadPromedio(jugadores[] arrJugadores, int i, int acum) {
+    public static int edadPromedio(Jugadores[] arrJugadores, int i, int acum) {
         int promedio = 0;
         if (arrJugadores[i] == null || i == arrJugadores.length - 1) {
             if (arrJugadores[i] != null) {
@@ -672,7 +679,7 @@ public class principal {
         return promedio;
     }
 
-    public static int mayoresPromedio(jugadores[] arrJugadores, int i, int edadPromedio) {
+    public static int mayoresPromedio(Jugadores[] arrJugadores, int i, int edadPromedio) {
         int cont = 0;
         if (arrJugadores[i] == null || i == arrJugadores.length - 1) {
             if (arrJugadores[i] != null) {
@@ -690,7 +697,7 @@ public class principal {
         return cont;
     }
 
-    public static String menorDeEdad(int i, jugadores[] listaJugadores, int edad) {
+    public static String menorDeEdad(int i, Jugadores[] listaJugadores, int edad) {
         String nombreApellido = "No hay un jugador menor a esa edad";
         if (i < listaJugadores.length) {
             if (edad >= listaJugadores[i].getEdad()) {
@@ -702,12 +709,12 @@ public class principal {
         return nombreApellido;
     }
 
-    // Este metodo ordena los jugadores usando el metodo de insercion
-    public static void ordenarNombreInsercion(jugadores[] arrJugadores) {
+    // Este metodo ordena los Jugadores usando el metodo de insercion
+    public static void ordenarNombreInsercion(Jugadores[] arrJugadores) {
         String nombreApellido;
         for (int i = 1; i < arrJugadores.length; i++) {
             if (arrJugadores[i] != null) {
-                jugadores unJugadores = arrJugadores[i];
+                Jugadores unJugadores = arrJugadores[i];
                 int j = i - 1;
                 nombreApellido = unJugadores.getApellido() + unJugadores.getNombreJugador();
                 while (j >= 0 && quitarAcentos(nombreApellido)
@@ -732,7 +739,7 @@ public class principal {
     }
 
     // El siguiente modulo ordena usando mergeSort
-    public static void ordenarNombreMerge(jugadores[] arrJugadores, int izquierda, int derecha) {
+    public static void ordenarNombreMerge(Jugadores[] arrJugadores, int izquierda, int derecha) {
         if (izquierda < derecha) {
             int medio = (izquierda + derecha) / 2;
             // llamados para dividir las mitades
@@ -743,10 +750,10 @@ public class principal {
         }
     }
 
-    public static void merge(jugadores[] arrJugadores, int izquierda, int medio, int derecha) {
+    public static void merge(Jugadores[] arrJugadores, int izquierda, int medio, int derecha) {
         int n1 = medio - izquierda + 1, n2 = derecha - medio, i = 0, j = 0, k = izquierda;
         String nombreApellidoL = "", nombreApellidoR = "";
-        jugadores[] L = new jugadores[n1], R = new jugadores[n2];
+        Jugadores[] L = new Jugadores[n1], R = new Jugadores[n2];
 
         for (int m = 0; m < n1; m++) {
             L[m] = arrJugadores[izquierda + m];

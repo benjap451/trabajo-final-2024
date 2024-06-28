@@ -1,4 +1,4 @@
-public class jugadores {
+public class Jugadores {
     private String nombreJugador;
     private String apellido;
     private int edad;
@@ -8,7 +8,7 @@ public class jugadores {
     private int cantGoles;
 
     // constructores
-    public jugadores(String nombreJugador, String apellido, int edad, int dni, int numeroCamiseta,
+    public Jugadores(String nombreJugador, String apellido, int edad, int dni, int numeroCamiseta,
             String nombreEquipo) {
         this.nombreJugador = nombreJugador;
         this.apellido = apellido;
@@ -18,7 +18,7 @@ public class jugadores {
         this.nombreEquipo = nombreEquipo;
     }
 
-    public jugadores(String nombreJugador, int dni) {
+    public Jugadores(String nombreJugador, int dni) {
         this.nombreJugador = nombreJugador;
         this.dni = dni;
     }

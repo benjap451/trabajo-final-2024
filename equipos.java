@@ -1,4 +1,4 @@
-public class equipos {
+public class Equipos {
     private String nombreEquipo;
     private String categoria;
     private int puntosAcum;
@@ -9,10 +9,10 @@ public class equipos {
     private int golesFavor;
     private int golesContra;
     private int diferenciaGoles; // golesFavor-golesContra
-    private jugadores[] listJugadores = new jugadores[15];
+    private Jugadores[] listJugadores = new Jugadores[15];
 
     // constructores
-    public equipos(String nombre, String categoria) {
+    public Equipos(String nombre, String categoria) {
         this.nombreEquipo = nombre;
         this.categoria = categoria;
         this.partidosJugados = 0;
@@ -65,7 +65,7 @@ public class equipos {
         return diferenciaGoles;
     }
 
-    public jugadores[] getListJugadores() {
+    public Jugadores[] getListJugadores() {
         return this.listJugadores;
     }
 
@@ -102,7 +102,7 @@ public class equipos {
         this.golesContra += golesContra;
     }
 
-    public void setNuevoJugador(jugadores unJugador) {
+    public void setNuevoJugador(Jugadores unJugador) {
         int i=0;
         boolean cargado=false;
         while (!cargado && i<this.listJugadores.length){
