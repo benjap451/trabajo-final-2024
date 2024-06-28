@@ -309,9 +309,11 @@ public class principal {
         int i = 0;
         boolean cargado = false;
         while (!cargado && i < arrEquipos.length) {
-            if (unJugador.getNombreEquipo().equalsIgnoreCase(arrEquipos[i].getNombreEquipo())) {
-                arrEquipos[i].setNuevoJugador(unJugador);
-                cargado = true;
+            if (arrEquipos[i]!=null){
+                if (unJugador.getNombreEquipo().equalsIgnoreCase(arrEquipos[i].getNombreEquipo())) {
+                    arrEquipos[i].setNuevoJugador(unJugador);
+                    cargado = true;
+                }
             }
             i++;
         }
