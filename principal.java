@@ -16,7 +16,6 @@ public class principal {
         Equipos[][] encuentros = generarFixture(arrEquipos);
         String[][] fechasJugadas = new String[7][4];
         Equipos[] tablaPosiciones = arrEquipos;
-
         System.out.println("          OPERACIONES:           ");
         System.out.println("1. Ingresar resultados de una fecha");
         System.out.println("2. Ingresar un nuevo jugador");

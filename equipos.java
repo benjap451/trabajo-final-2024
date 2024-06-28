@@ -12,6 +12,7 @@ public class Equipos {
     private Jugadores[] listJugadores = new Jugadores[15];
 
     // constructores
+    
     public Equipos(String nombre, String categoria) {
         this.nombreEquipo = nombre;
         this.categoria = categoria;
@@ -70,6 +71,7 @@ public class Equipos {
     }
 
     // modificadores
+
     public void setNombreEquipo(String nombre) {
         nombreEquipo = nombre;
     }
@@ -102,6 +104,16 @@ public class Equipos {
         this.golesContra += golesContra;
     }
 
+    // propios del tipo
+
+    public void setPuntosAcum() {
+        this.puntosAcum = (this.partidosGanados * 3) + this.partidosEmpatados;
+    }
+
+    public void setDiferenciaGoles() {
+        this.diferenciaGoles = this.golesFavor - this.golesContra;
+    }
+
     public void setNuevoJugador(Jugadores unJugador) {
         int i=0;
         boolean cargado=false;
@@ -112,16 +124,5 @@ public class Equipos {
             }
             i++;
         }
-    }
-
-    // pro-tips
-    // este modulo no se si usarlo o no...
-    public void setPuntosAcum() {
-        this.puntosAcum = (this.partidosGanados * 3) + this.partidosEmpatados;
-    }
-
-    // este tampoco se si lo uso...
-    public void setDiferenciaGoles() {
-        this.diferenciaGoles = this.golesFavor - this.golesContra;
     }
 }
