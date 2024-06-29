@@ -14,7 +14,6 @@ public class principal {
         leerJugadores(arrEquipos, arrJugadores);
         Equipos[][] encuentros = generarFixture(arrEquipos);
         String[][] fechasJugadas = new String[7][4];
-        Jugadores[] tablaPorGoles = arrJugadores;
         System.out.println("          OPERACIONES:           ");
         System.out.println("1. Ingresar resultados de una fecha");
         System.out.println("2. Ingresar un nuevo jugador");
@@ -25,11 +24,11 @@ public class principal {
         System.out.println("7. Ver jugador menor a una edad");
         System.out.println("8. Ver Jugadores por nombre");
         System.out.println("0. Para salir \n");
-        menuPrincipal(b1, arrEquipos, encuentros, fechasJugadas, arrJugadores, tablaPorGoles);
+        menuPrincipal(b1, arrEquipos, encuentros, fechasJugadas, arrJugadores);
     }
 
     public static void menuPrincipal(boolean b1, Equipos[] arrEquipos, Equipos[][] encuentros,
-            String[][] fechasJugadas, Jugadores[] arrJugadores, Jugadores[] tablaPorGoles) {
+            String[][] fechasJugadas, Jugadores[] arrJugadores) {
         Scanner sc = new Scanner(System.in);
         int num, fecha;
         System.out.println("-:-:-:-:-:-:-:-:-:-:-:-:-:-:-:-:-:-:-:-:-:-:-:- \n");
@@ -43,7 +42,7 @@ public class principal {
                     try {
                         System.out.println("Ingrese el numero de la fecha a cargar");
                         fecha = Integer.parseInt(sc.nextLine()) - 1;
-                        if (fecha <= 6) {
+                        if (fecha <= 6 && fecha>0) {
                             if (fechasJugadas[fecha][0] == null) {
                                 cargarFechas(encuentros, fecha, fechasJugadas);
                             } else {
@@ -211,7 +210,7 @@ public class principal {
             System.out.println(e.getMessage());
         }
         if (b1) {
-            menuPrincipal(b1, arrEquipos, encuentros, fechasJugadas, arrJugadores, tablaPorGoles);
+            menuPrincipal(b1, arrEquipos, encuentros, fechasJugadas, arrJugadores);
         }
     }
 
@@ -392,7 +391,7 @@ public class principal {
             System.out.print("Ingrese el numero de la fecha para ver: ");
             k = Integer.parseInt(sc.nextLine()) - 1;
             System.out.println();
-            if (k <= 6) {
+            if (k <= 6 && k>=0) {
                 if (fechasJugadas[k][0] != null) {
                     for (int j = 0; j < fechasJugadas[0].length; j++) {
                         System.out.println(fechasJugadas[k][j]);
